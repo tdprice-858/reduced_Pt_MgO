@@ -3,11 +3,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 from pmutt.statmech import StatMech, presets
 from ase.build import molecule
+import seaborn as sns
 
 db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/25_vac_study_best_fit/\
 s100_sub1_ox_vac_2mg_vac/best_fit_H_ad_ox_2mg.db')
 
-
+palette = sns.color_palette('muted')
+colors = {'bare': palette[0],
+          'H': palette[1]}
 
 # Generating species dictionary using pmutt StatMech class
 
@@ -209,15 +212,33 @@ phase_diagram = PhaseDiagram(reactions=reactions)
 import numpy as np
 from matplotlib import pyplot as plt
 
-T = np.linspace(300, 1000, 200) # K
+T = np.linspace(300, 1000, 10) # K
 fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='kJ/mol')
 
 
 # Set colors to lines
 colors = ('#000080', '#0029FF', '#00D5FF', '#7AFF7D',
           '#FFE600', '#FF4A00', '#800000')
-for color, line in zip(colors, ax1.get_lines()):
-    line.set_color(color)
+# Code from example
+'''for color, line in zip(colors, ax1.get_lines()):
+    print(line, 'line')
+    line.set_color(color)'''
+# Setting up colors to have each unique vac structure a different color
+for line in ax1.get_lines():
+    print(line, 'line')
+    if '88_27_14' in str(line):
+        line.set_color(palette[0])
+        if 'H' in str(line):
+            line.set_marker('^')
+        else:
+            line.set_marker('o')
+    if '84_46_37' in str(line):
+        line.set_color(palette[1])
+        if 'H' in str(line):
+            line.set_marker('^')
+        else:
+            line.set_marker('o')
+    #line.set_color(color)
 
 labels = []
 for key, value in species.items():
