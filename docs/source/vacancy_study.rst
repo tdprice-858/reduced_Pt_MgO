@@ -7,3 +7,7 @@ To use Lumache, first install it using pip:
 
    (.venv) $ pip install lumache
 
+.. toctree::
+   :maxdepth: -1
+
+   bulk_calculations/overview
