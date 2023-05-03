@@ -10,4 +10,4 @@ To use Lumache, first install it using pip:
 .. toctree::
    :maxdepth: -1
 
-   bulk_calculations/overview
+   vacancy_study/overview
