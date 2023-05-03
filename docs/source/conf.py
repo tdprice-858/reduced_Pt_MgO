@@ -2,9 +2,9 @@
 
 # -- Project information
 
-project = 'Lumache'
-copyright = '2021, Graziella'
-author = 'Graziella'
+project = 'Reduced Pt-MgO'
+copyright = '2023, Trevor Price'
+author = 'Trevor Price'
 
 release = '0.1'
 version = '0.1.0'
