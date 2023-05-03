@@ -19,5 +19,5 @@ Contents
 .. toctree::
 
    usage
-   Vacancy Study
+   vacancy_study
    
