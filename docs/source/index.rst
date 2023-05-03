@@ -17,6 +17,7 @@ Contents
 --------
 
 .. toctree::
+   :maxdepth: 5
 
    usage
    vacancy_study
