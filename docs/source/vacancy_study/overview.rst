@@ -6,5 +6,6 @@ Calculations of sub1 Pt/MgO models will be considered here.
 
 
 .. image:: ../../../figures/nearest_neighbors.png
+  :width: 400
 .. image:: ../../../figures/coordination_space_vac_study.png
   :width: 400
