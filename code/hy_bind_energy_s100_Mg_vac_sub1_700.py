@@ -22,6 +22,8 @@ h_2ad_surf_subsurf = []
 h_1ad_subsurf = []
 h_2ad_subsurf = []
 
+H2_ad = []
+
 
 for row in db.select(convergence=True):
 
@@ -66,7 +68,10 @@ for row in db.select(convergence=True):
         #print(f"{path} \n {energy}")
     elif '01_hydrogen' in row.path:
         H2_energy = row.energy
-        print(H2_energy)
+
+    elif '17_100_PtMgO_H2' in row.path:
+        H2_ad.append(row.energy)
+        print(row.path)
 
 h1_binding_energy = np.array(h_1ad_surf)
 h2_binding_energy = np.array(h_2ad_surf)
@@ -75,6 +80,7 @@ h4_binding_energy = np.array(h_4ad_surf)
 h1_subsurf_binding_energy = np.array(h_1ad_subsurf)
 h2_subsurf_binding_energy = np.array(h_2ad_subsurf)
 h2_surf_subsurf_binding_energy = np.array(h_2ad_surf_subsurf)
+H2_binding_energy = np.array(H2_ad)
 
 bare_surf = np.array(bare_energy)
 
@@ -89,9 +95,8 @@ h4_binding_energy_per_h = (sorted(h4_binding_energy) - bare_surf -  2*hydrogen_e
 h1_subsurf_binding_energy_per_h = (sorted(h1_subsurf_binding_energy) - bare_surf -  0.5*hydrogen_energy)
 h2_subsurf_binding_energy_per_h = (sorted(h2_subsurf_binding_energy) - bare_surf - hydrogen_energy)/2
 h2_surf_subsurf_binding_energy_per_h = (sorted(h2_surf_subsurf_binding_energy) - bare_surf - hydrogen_energy)/2
+H2_binding_energy_per_molecule = (sorted(H2_binding_energy) - bare_surf - hydrogen_energy)
 
-
-print(h1_binding_energy_per_h)
 x1 = np.arange(len(h1_binding_energy_per_h))
 x2 = np.arange(len(h2_binding_energy_per_h)) + x1[-1] +1
 x3 = np.arange(len(h3_binding_energy_per_h)) + x2[-1] +1
@@ -99,6 +104,7 @@ x4 = np.arange(len(h4_binding_energy_per_h)) + x3[-1] +1
 x5 = np.arange(len(h1_subsurf_binding_energy_per_h)) + x4[-1] +1
 x6 = np.arange(len(h2_subsurf_binding_energy_per_h)) + x5[-1] +1
 x7 = np.arange(len(h2_surf_subsurf_binding_energy_per_h)) + x6[-1] +1
+x8 = np.arange(len(H2_binding_energy_per_molecule)) + x7[-1] +1
 
 
 plt.bar(x1,h1_binding_energy_per_h, color='r',
@@ -115,6 +121,8 @@ plt.bar(x6 , h2_subsurf_binding_energy_per_h, color='m',
         edgecolor='grey', label='2H* sub')
 plt.bar(x7 , h2_surf_subsurf_binding_energy_per_h, color='r',
         edgecolor='grey', label='1H* surf 1H* sub')
+plt.bar(x8 , H2_binding_energy_per_molecule, color='b',
+        edgecolor='grey', label='H2* surf')
 
 plt.xlabel('Configuration', fontweight='bold', fontsize=11)
 plt.ylabel('Binding energy per Hydrogen eV', fontweight='bold', fontsize=11)
