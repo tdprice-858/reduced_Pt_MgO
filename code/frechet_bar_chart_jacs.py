@@ -16,7 +16,7 @@ rootdir = os.getcwd()
 
 #Sorting dictionary, and confirming
 exafs_dict = {}
-exafs_dict = get_exafs_data(exafs_dict, rootdir)
+exafs_dict = get_exafs_data(exafs_dict, rootdir, sig_constraint=10**-30)
 
 #Sorting dictionary in order of best to worst fit wrt. to red chi squre metric
 new_dict = sorted(exafs_dict.items(), key=lambda x: x[1]['red_chi_square'], reverse=False)
@@ -68,8 +68,8 @@ for data in new_dict:
         continue
 
 
-#x_s100 = np.arange(len(s100_frechet))
-x_s100_Mg_vac = np.arange(len(s100_mg_vac_frechet)) #+ x_s100[-1] + 1
+x_s100 = np.arange(len(s100_frechet))
+x_s100_Mg_vac = np.arange(len(s100_mg_vac_frechet)) + x_s100[-1] + 1
 x_s310 = np.arange(len(s310_frechet)) + x_s100_Mg_vac[-1] + 1
 
 # Create Plot
@@ -79,7 +79,7 @@ fig, ax1 = plt.subplots()
 
 ax1.set_xlabel('Configuration',fontweight='bold', fontsize=11)
 ax1.set_ylabel('red_chi_square', color='black')
-#ax1.bar(x_s100, s100_red_chi, color='red', label='[100]')
+ax1.bar(x_s100, s100_red_chi, color='red', label='[100]')
 ax1.bar(x_s100_Mg_vac, s100_mg_vac_red_chi, color ='purple', label ='[100]-Mg-vac')
 ax1.bar(x_s310, s310_red_chi, color ='orange', label ='[310]')
 
@@ -90,7 +90,7 @@ plt.legend(fontsize= 6)
 
 ax2 = ax1.twinx()
 ax2.set_ylabel('frechet', color='blue')
-#ax2.plot(x_s100, s100_frechet, color='blue')
+ax2.plot(x_s100, s100_frechet, color='blue')
 ax2.plot(x_s100_Mg_vac, s100_mg_vac_frechet, color ='blue')
 ax2.plot(x_s310, s310_frechet, color ='blue')
 ax2.tick_params(axis='y')
