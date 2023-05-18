@@ -213,6 +213,10 @@ for data in sorted_s100_sub1_ox_vac_2mg_vac_dict:
     #print(data[0], 'structure')
     #print(data[-1]['energy'])
     #print(data[-1]['red_chi_square'])
+    print(data[0], 'structure')
+    print(data[-1]['energy'])
+    print(data[-1]['red_chi_square'])
+    print(boltzmann_factor(np.array(data[-1]['energy']), T))
 
 
 for data in sorted_s100_sub1_ox_vac_mg_vac_dict:
@@ -220,9 +224,7 @@ for data in sorted_s100_sub1_ox_vac_mg_vac_dict:
     s100_sub1_ox_vac_mg_vac_frechet.append(data[-1]['frechet'])
     s100_sub1_ox_vac_mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
     s100_sub1_ox_vac_mg_vac_energy.append(data[-1]['energy'])
-    print(data[0], 'structure')
-    print(data[-1]['energy'])
-    print(data[-1]['red_chi_square'])
+
 for data in sorted_s100_sub1_ox_vac_dict:
     s100_sub1_ox_vac_r_factor.append(data[-1]['r_factor'])
     s100_sub1_ox_vac_frechet.append(data[-1]['frechet'])
@@ -238,6 +240,7 @@ for data in sorted_s100_sub1_2ox_vac_mg_vac_dict:
     s100_sub1_2ox_vac_mg_vac_frechet.append(data[-1]['frechet'])
     s100_sub1_2ox_vac_mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
     s100_sub1_2ox_vac_mg_vac_energy.append(data[-1]['energy'])
+
 for data in sorted_s100_sub1_2ox_vac_2mg_vac_dict:
     s100_sub1_2ox_vac_2mg_vac_r_factor.append(data[-1]['r_factor'])
     s100_sub1_2ox_vac_2mg_vac_frechet.append(data[-1]['frechet'])
@@ -273,6 +276,8 @@ fig, ax1 = plt.subplots(3, 2)
 plt.figure(figsize=(14,10))
 plt.tight_layout(pad=2)
 
+x = [10**-6 * 100**x for x in range(0,4, 1)]
+
 #ax1.figure(figsize = (10, 5))
 #ax1[:,:].set_xlabel('Configuration',fontweight='bold', fontsize=11)
 #ax1[:,:].set_ylabel('red_chi_square', color='black')
@@ -282,29 +287,35 @@ ax1[1, 1].scatter(s100_sub1_ox_vac_2mg_vac_BF, s100_sub1_ox_vac_2mg_vac_red_chi_
 #              color='yellow')
 ax1[1, 1].set_title('s100_sub1_ox_vac_2mg_vac')
 ax1[1, 1].set_ylim([0.0, 50])
-#ax1[1, 1].set_xlim([0, 10])
+
+
 
 ax1[1, 0].scatter(s100_sub1_ox_vac_mg_vac_BF, s100_sub1_ox_vac_mg_vac_red_chi_square, color = 'purple')
 ax1[1, 0].set_title('s100_sub1_ox_vac_mg_vac')
+
 #ax1[1, 0].set_ylim([0, 1.0])
 #ax1[1, 0].set_xlim([0, 10])
 
 ax1[0, 0].scatter(s100_sub1_ox_vac_BF, s100_sub1_ox_vac_red_chi_square, color = 'orange')
 ax1[0, 0].set_title('s100_sub1_ox_vac')
+ax1[0, 0].set_xscale('symlog')
 #ax1[0, 0].set_ylim([0, 1.0])
 
 ax1[0, 1].scatter(s100_sub1_mg_vac_BF, s100_sub1_mg_vac_red_chi_square, color= 'green')
 ax1[0, 1].set_title('s100_sub1_mg_vac')
+
 #ax1[0, 1].set_ylim([0, 1.0])
 
 ax1[2, 0].scatter(s100_sub1_2ox_vac_mg_vac_BF, s100_sub1_2ox_vac_mg_vac_red_chi_square, color = 'green')
 ax1[2, 0].set_title('s100_sub1_2ox_vac_mg_vac')
+
 #ax1[2, 0].set_ylim([0, 1.0])
 #ax1[2, 0].set_xlim([0, 8])
 
 ax1[2, 1].scatter(s100_sub1_2ox_vac_2mg_vac_BF, s100_sub1_2ox_vac_2mg_vac_red_chi_square, color = 'orange')
 ax1[2, 1].set_title('s100_sub1_2ox_vac_2mg_vac')
 ax1[2, 1].set_ylim([0, 50])
+
 #ax1[2, 1].set_xlim([0, 50])
 
 
@@ -336,9 +347,17 @@ for ax in ax1[:, 0].flat:
     #ax.label_outer()
 for ax in ax1[2, :].flat:
     ax.set(xlabel='Boltzmann Factor')
+    #ax.set_xticks(x)
+for ax in ax1[:, :].flat:
+    ax.set_xscale('log')
+    ax.set_xlim([10**-6, 2])
+    ax.set_xticks(x)
 for ax in ax1[0:2,:].flat:
     #ax.get_xaxis().set_visible(False)
     ax.get_xaxis().set_ticklabels([])
+    ax.set_xticks([])
+
+    #ax.label_outer()
 #for ax in ax2[:, 1].flat:
 #    ax.set(xlabel='Config', ylabel='Red Chi Sq')
 #    #ax.label_outer()
@@ -351,6 +370,7 @@ for ax in ax1[0:2,:].flat:
 # Show plot
 
 #ax1[1, 1].legend()
+
 plt.show()
 
 '''# Create Plot
@@ -415,7 +435,7 @@ ax1[1, 1].scatter(s100_sub1_ox_vac_2mg_vac_energy, s100_sub1_ox_vac_2mg_vac_red_
 #              color='yellow')
 ax1[1, 1].set_title('s100_sub1_ox_vac_2mg_vac')
 ax1[1, 1].set_ylim([0.0, 50])
-ax1[1, 1].set_xlim([0, 1])
+ax1[1, 1].set_xlim([0, 5])
 
 ax1[1, 0].scatter(s100_sub1_ox_vac_mg_vac_energy, s100_sub1_ox_vac_mg_vac_red_chi_square, color = 'purple')
 ax1[1, 0].set_title('s100_sub1_ox_vac_mg_vac')

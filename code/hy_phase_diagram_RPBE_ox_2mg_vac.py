@@ -40,6 +40,11 @@ h4ad_low_pot_energy_88_27_14 = 10000000
 
 for row in db.select():
     if '88_27_14' in row.path:
+        print(row.path)
+        print(row.energy)
+        if 'bare' in row.path:
+            print(row.path)
+            print(row.energy)
         if '01_H_ad' in row.path:
             if row.energy < h1ad_low_pot_energy_88_27_14:
                 h1ad_low_pot_energy_88_27_14 = row.energy
@@ -56,7 +61,11 @@ for row in db.select():
             if row.energy < h4ad_low_pot_energy_88_27_14:
                 h4ad_low_pot_energy_88_27_14 = row.energy
                 h4ad_path = row.path
-
+print('hello')
+print(h1ad_path)
+print(h2ad_path)
+print(h3ad_path)
+print(h4ad_path)
 
 
 for row in db.select():
@@ -68,7 +77,8 @@ for row in db.select():
             **presets['harmonic'])
     #if '03_2_ad_hy' in row.path:
     if h2ad_path in row.path:
-
+        print('energygygyg')
+        print(row.energy)
         species[f"ad_2hy_{row.path.split('/')[-4]}"] = StatMech(
                 name=row.path.split('/')[-2].split('_')[0], potentialenergy=row.energy,
                 vib_wavenumbers=[3507.459279, 3083.693007, 994.848016,

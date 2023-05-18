@@ -30,8 +30,6 @@ print(configs)
 species_dict = {}
 bare_dict = {}
 
-
-
 bare_min = 100
 for config in configs:
     species_dict[config] = {}
@@ -48,6 +46,7 @@ for config in configs:
     h3ad_surf_sub_low_pot_energy = 10000000
     h4ad_surf_sub_low_pot_energy = 10000000
     for row in db.select(convergence=True):
+        print(row.path)
         if config in row.path:
             if 'bare' in row.path:
                 species_dict[config]['bare'] = row.path
@@ -257,9 +256,14 @@ ax2.set_ylabel('H Pressure (bar)')
 # Change color scheme
 plt.set_cmap('jet')
 # Add labels
+labels = []
+for key, value in species.items():
+    if str(key) != 'H2' and 'shift' not in str(key):
+        labels.append(str(key))
 cbar2.ax.set_yticklabels(labels)
-
+print(labels)
 fig2.set_dpi(150.)
+fig2.set_size_inches((11,8))
 plt.show()
 
 

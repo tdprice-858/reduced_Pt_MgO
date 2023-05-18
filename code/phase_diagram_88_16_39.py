@@ -55,6 +55,7 @@ for config in configs:
     O2_low_pot_energy = 10000
     CO_2H_low_pot_energy = 10000
     for row in db.select(convergence=True):
+
         if config in row.path:
             if 'bare' in row.path:
                 species_dict[config]['bare'] = row.path
@@ -126,8 +127,7 @@ for config in configs:
                 if row.energy < O_low_pot_energy:
                     O_low_pot_energy = row.energy
                     species_dict[config]['O_ad'] = row.energy
-                    print(row.path)
-                    print(row.energy)
+
             elif 'H' in row.formula and 'C' in row.formula:
                 if row.energy < CO_2H_low_pot_energy:
                     CO_2H_low_pot_energy = row.energy
@@ -174,9 +174,7 @@ for config in configs:
 
 for config in configs:
     for item in species_dict[config]:
-        print(config)
-        print(item)
-        print(species_dict[config][item])
+
         if '_H_ad' in item:
             species[item +'_'+ config] = StatMech(
                 name=item +'_'+ config, potentialenergy=species_dict[config][item],
@@ -184,7 +182,8 @@ for config in configs:
                 **presets['harmonic'])
             reactions.append(Reaction.from_string(f"bare_{config} \
             + 0.5 H2 = {item +'_'+ config} + shift_{config}", species))
-        if '2H_ad' in item:
+        if '_2H_ad' in item and 'CO' not in item:
+            print(item)
             species[item +'_'+ config] = StatMech(
                 name=item +'_'+ config, potentialenergy=species_dict[config][item],
                 vib_wavenumbers=[3507.459279, 3083.693007, 994.848016,
@@ -211,7 +210,35 @@ for config in configs:
                 **presets['harmonic'])
             reactions.append(Reaction.from_string(f"bare_{config} \
                                     + 2 H2 = {item +'_'+ config} + shift_{config}", species))
-        #if 'O_ad' in item:
+        if '_O_ad' in item:
+            species[item + '_' + config] = StatMech(
+                name=item + '_' + config, potentialenergy=species_dict[config][item],
+                vib_wavenumbers=[583.925039, 460.242488, 296.488304],
+                **presets['harmonic'])
+            reactions.append(Reaction.from_string(f"bare_{config} \
+                                                + 0.5 O2 = {item + '_' + config} + shift_{config}", species))
+        if 'O2_ad' in item:
+            species[item + '_' + config] = StatMech(
+                name=item + '_' + config, potentialenergy=species_dict[config][item],
+                vib_wavenumbers=[1141.442323, 584.621919, 382.38351, 269.965748, 145.648531, 109.555067],
+                **presets['harmonic'])
+            reactions.append(Reaction.from_string(f"bare_{config} \
+                                                + O2 = {item + '_' + config} + shift_{config}", species))
+        if 'CO_2H' in item:
+            species[item + '_' + config] = StatMech(
+                name=item + '_' + config, potentialenergy=species_dict[config][item],
+                vib_wavenumbers=[1141.442323, 584.621919, 382.38351, 269.965748, 145.648531, 109.555067],
+                **presets['harmonic'])
+            reactions.append(Reaction.from_string(f"bare_{config} \
+                                                + CO + H2 = {item + '_' + config} + shift_{config}", species))
+        if 'CO_ad' in item:
+            species[item + '_' + config] = StatMech(
+                name=item + '_' + config, potentialenergy=species_dict[config][item],
+                vib_wavenumbers=[1579.490562, 1072.366846, 711.887527, 628.454417, 396.794991, 159.020783],
+                **presets['harmonic'])
+            reactions.append(Reaction.from_string(f"bare_{config} \
+                                                + CO = {item + '_' + config} + shift_{config}", species))
+
 
 
 
@@ -220,7 +247,7 @@ for config in configs:
 
 phase_diagram = PhaseDiagram(reactions=reactions)
 
-
+print(species)
 
 T = np.linspace(300, 1000, 10) # K
 fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='kJ/mol')
@@ -231,7 +258,7 @@ colors = ('#000080', '#0029FF', '#00D5FF', '#7AFF7D',
           '#FFE600', '#FF4A00', '#800000')
 # Code from example
 for color, line in zip(colors, ax1.get_lines()):
-    print(line, 'line')
+
     line.set_color(color)
 
 num_configs = len(configs)
@@ -241,14 +268,22 @@ for line in ax1.get_lines():
     for count, config in enumerate(configs):
         if config in str(line):
             line.set_color(palette[count])
-            if 'H' in str(line):
+            if 'CO_ad' in str(line):
+                line.set_marker('*')
+            elif 'O2_ad' in str(line):
+                line.set_marker('v')
+            elif 'O_ad' in str(line):
+                line.set_marker('D')
+            elif 'CO_2H' in str(line):
+                line.set_marker('x')
+            elif 'H' in str(line):
                 line.set_marker('^')
             else:
                 line.set_marker('o')
 
 labels = []
 for key, value in species.items():
-    if str(key) != 'H2' and 'shift' not in str(key):
+    if str(key) not in ['H2', 'CO', 'O2'] and 'shift' not in str(key):
         labels.append(str(key))
 # Set labels to lines
 
