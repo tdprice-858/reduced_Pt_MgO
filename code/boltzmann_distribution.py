@@ -210,9 +210,9 @@ for data in sorted_s100_sub1_ox_vac_2mg_vac_dict:
     s100_sub1_ox_vac_2mg_vac_frechet.append(data[-1]['frechet'])
     s100_sub1_ox_vac_2mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
     s100_sub1_ox_vac_2mg_vac_energy.append(data[-1]['energy'])
-    print(data[0], 'structure')
-    print(data[-1]['energy'])
-    print(data[-1]['red_chi_square'])
+    #print(data[0], 'structure')
+    #print(data[-1]['energy'])
+    #print(data[-1]['red_chi_square'])
 
 
 for data in sorted_s100_sub1_ox_vac_mg_vac_dict:
@@ -220,6 +220,9 @@ for data in sorted_s100_sub1_ox_vac_mg_vac_dict:
     s100_sub1_ox_vac_mg_vac_frechet.append(data[-1]['frechet'])
     s100_sub1_ox_vac_mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
     s100_sub1_ox_vac_mg_vac_energy.append(data[-1]['energy'])
+    print(data[0], 'structure')
+    print(data[-1]['energy'])
+    print(data[-1]['red_chi_square'])
 for data in sorted_s100_sub1_ox_vac_dict:
     s100_sub1_ox_vac_r_factor.append(data[-1]['r_factor'])
     s100_sub1_ox_vac_frechet.append(data[-1]['frechet'])
@@ -261,7 +264,7 @@ s100_sub1_ox_vac_mg_vac_BF = boltzmann_factor(np.array(s100_sub1_ox_vac_mg_vac_e
 s100_sub1_2ox_vac_mg_vac_BF = boltzmann_factor(np.array(s100_sub1_2ox_vac_mg_vac_energy), T)
 s100_sub1_ox_vac_2mg_vac_BF = boltzmann_factor(np.array(s100_sub1_ox_vac_2mg_vac_energy), T)
 s100_sub1_2ox_vac_2mg_vac_BF = boltzmann_factor(np.array(s100_sub1_2ox_vac_2mg_vac_energy), T)
-print(s100_sub1_ox_vac_2mg_vac_BF, 'Boltzmann Factor')
+#print(s100_sub1_ox_vac_2mg_vac_BF, 'Boltzmann Factor')
 
 #print(s100_sub1_2ox_vac_2mg_vac_BF, 'Boltzmann factor')
 # Create Plot
