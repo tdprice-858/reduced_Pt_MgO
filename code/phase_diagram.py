@@ -195,7 +195,7 @@ phase_diagram = PhaseDiagram(reactions=reactions)
 
 
 T = np.linspace(300, 1000, 10) # K
-fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='kJ/mol')
+fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='eV')
 
 
 # Set colors to lines

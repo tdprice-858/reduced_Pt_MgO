@@ -20,8 +20,10 @@ startTime = time.time()
 
 #db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 #26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/updated.db')
+#db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
+#26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/88_16_39/updated.db')
 db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
-26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/88_16_39/updated.db')
+26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/88_39_46/updated.db')
 iso_molecule_db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 08_isolated_molecules/RPBE_iso/updated.db')
 palette = sns.color_palette('muted')
@@ -105,6 +107,8 @@ for config in configs:
                     if row.energy < h2ad_surf_pot_energy:
                         h2ad_surf_pot_energy = row.energy
                         species_dict[config]['surf_2H_ad'] = row.energy
+                        print(row.path)
+                        print(row.energy)
                 if '3H_ad' in row.path:
                     if row.energy < h3ad_surf_low_pot_energy:
                         h3ad_surf_low_pot_energy = row.energy
@@ -170,7 +174,7 @@ for config in configs:
         reactions.append(Reaction.from_string(f"bare_{config} = bare_{config} \
         + shift_{config}", species))
 
-
+print(species_dict)
 
 for config in configs:
     for item in species_dict[config]:
@@ -183,7 +187,7 @@ for config in configs:
             reactions.append(Reaction.from_string(f"bare_{config} \
             + 0.5 H2 = {item +'_'+ config} + shift_{config}", species))
         if '_2H_ad' in item and 'CO' not in item:
-            print(item)
+
             species[item +'_'+ config] = StatMech(
                 name=item +'_'+ config, potentialenergy=species_dict[config][item],
                 vib_wavenumbers=[3507.459279, 3083.693007, 994.848016,
@@ -210,7 +214,7 @@ for config in configs:
                 **presets['harmonic'])
             reactions.append(Reaction.from_string(f"bare_{config} \
                                     + 2 H2 = {item +'_'+ config} + shift_{config}", species))
-        if '_O_ad' in item:
+        if 'O_ad' in item and not 'CO' in item:
             species[item + '_' + config] = StatMech(
                 name=item + '_' + config, potentialenergy=species_dict[config][item],
                 vib_wavenumbers=[583.925039, 460.242488, 296.488304],
@@ -250,7 +254,7 @@ phase_diagram = PhaseDiagram(reactions=reactions)
 print(species)
 
 T = np.linspace(300, 1000, 10) # K
-fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='kJ/mol')
+fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='eV')
 
 
 # Set colors to lines
@@ -258,20 +262,21 @@ colors = ('#000080', '#0029FF', '#00D5FF', '#7AFF7D',
           '#FFE600', '#FF4A00', '#800000')
 # Code from example
 for color, line in zip(colors, ax1.get_lines()):
-
+    print(line)
+    print(color)
     line.set_color(color)
 
 num_configs = len(configs)
 
-for line in ax1.get_lines():
-    print(line, 'line')
+for counts, line in enumerate(ax1.get_lines()):
     for count, config in enumerate(configs):
         if config in str(line):
-            line.set_color(palette[count])
+
+            line.set_color(palette[counts])
             if 'CO_ad' in str(line):
                 line.set_marker('*')
             elif 'O2_ad' in str(line):
-                line.set_marker('v')
+                line.set_marker('d')
             elif 'O_ad' in str(line):
                 line.set_marker('D')
             elif 'CO_2H' in str(line):
@@ -322,6 +327,7 @@ plt.set_cmap('jet')
 cbar2.ax.set_yticklabels(labels)
 
 fig2.set_dpi(150.)
+fig2.set_size_inches((11,8))
 plt.show()
 
 
