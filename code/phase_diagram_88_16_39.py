@@ -20,18 +20,21 @@ startTime = time.time()
 
 #db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 #26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/updated.db')
-#db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
-#26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/88_16_39/updated.db')
 db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/88_39_46/updated.db')
+#db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
+#25_vac_study_best_fit/s100_sub1_2ox_vac_2mg_vac/84_88_27_26/updated.db')
+#db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
+#25_vac_study_best_fit/s100_sub1_ox_vac_2mg_vac/88_38_28/updated.db')
 iso_molecule_db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 08_isolated_molecules/RPBE_iso/updated.db')
 palette = sns.color_palette('muted')
 
 
-
 configs = np.unique([row.path.split('s100_sub1_ox_vac_2mg_vac/')[-1].split('/')[0]
            for row in db.select(convergence=True)])
+#configs = np.unique([row.path.split('s100_sub1_ox_vac_2mg_vac/')[-1].split('/')[0]
+#           for row in db.select(convergence=True)])
 species_dict = {}
 bare_dict = {}
 
@@ -52,12 +55,12 @@ for config in configs:
     h2ad_surf_sub_pot_energy = 10000000
     h3ad_surf_sub_low_pot_energy = 10000000
     h4ad_surf_sub_low_pot_energy = 10000000
+    H2_mol_low_pot_energy = 100000
     CO_low_pot_energy = 100000
     O_low_pot_energy = 100000
     O2_low_pot_energy = 10000
     CO_2H_low_pot_energy = 10000
     for row in db.select(convergence=True):
-
         if config in row.path:
             if 'bare' in row.path:
                 species_dict[config]['bare'] = row.path
@@ -117,6 +120,10 @@ for config in configs:
                     if row.energy < h4ad_surf_low_pot_energy:
                         h4ad_surf_low_pot_energy = row.energy
                         species_dict[config]['surf_4H_ad'] = row.energy
+                if 'H2_ad' in row.path:
+                    if row.energy < H2_mol_low_pot_energy:
+                        H2_mol_low_pot_energy = row.energy
+                        species_dict[config]['surf_H2_ad'] = row.energy
             elif 'CO' in row.path and 'H' not in row.formula:
                 if row.energy < CO_low_pot_energy:
                     CO_low_pot_energy = row.energy
@@ -136,7 +143,6 @@ for config in configs:
                 if row.energy < CO_2H_low_pot_energy:
                     CO_2H_low_pot_energy = row.energy
                     species_dict[config]['CO_2H_ad'] = row.energy
-
 
 
 
@@ -187,11 +193,18 @@ for config in configs:
             reactions.append(Reaction.from_string(f"bare_{config} \
             + 0.5 H2 = {item +'_'+ config} + shift_{config}", species))
         if '_2H_ad' in item and 'CO' not in item:
-
             species[item +'_'+ config] = StatMech(
                 name=item +'_'+ config, potentialenergy=species_dict[config][item],
                 vib_wavenumbers=[3507.459279, 3083.693007, 994.848016,
                                  769.764211, 709.249024, 475.216211],
+                **presets['harmonic'])
+            reactions.append(Reaction.from_string(f"bare_{config} \
+                        + H2 = {item +'_'+ config} + shift_{config}", species))
+        if 'H2_ad' in item and 'CO' not in item:
+            species[item +'_'+ config] = StatMech(
+                name=item +'_'+ config, potentialenergy=species_dict[config][item],
+                vib_wavenumbers=[4128.99, 707.19, 467.21,
+                                 310.50, 165.09, 100.22],
                 **presets['harmonic'])
             reactions.append(Reaction.from_string(f"bare_{config} \
                         + H2 = {item +'_'+ config} + shift_{config}", species))
@@ -261,18 +274,21 @@ fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='eV')
 colors = ('#000080', '#0029FF', '#00D5FF', '#7AFF7D',
           '#FFE600', '#FF4A00', '#800000')
 # Code from example
-for color, line in zip(colors, ax1.get_lines()):
+'''for color, line in zip(colors, ax1.get_lines()):
     print(line)
     print(color)
-    line.set_color(color)
+    line.set_color(color)'''
 
 num_configs = len(configs)
-
+i=0
 for counts, line in enumerate(ax1.get_lines()):
+    print(line)
     for count, config in enumerate(configs):
         if config in str(line):
-
-            line.set_color(palette[counts])
+            if i>9:
+                i = 0
+            line.set_color(palette[i])
+            i += 1
             if 'CO_ad' in str(line):
                 line.set_marker('*')
             elif 'O2_ad' in str(line):
