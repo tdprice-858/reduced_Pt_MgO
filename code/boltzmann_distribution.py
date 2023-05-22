@@ -214,8 +214,13 @@ for data in sorted_s100_sub1_ox_vac_2mg_vac_dict:
     #print(data[-1]['energy'])
     #print(data[-1]['red_chi_square'])
     print(data[0], 'structure')
+    print('energy')
     print(data[-1]['energy'])
+    print('red chi square')
     print(data[-1]['red_chi_square'])
+    print('frechet')
+    print(data[-1]['frechet'])
+    print('boltzman')
     print(boltzmann_factor(np.array(data[-1]['energy']), T))
 
 

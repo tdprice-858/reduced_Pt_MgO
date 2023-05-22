@@ -20,10 +20,10 @@ startTime = time.time()
 
 #db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 #26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/updated.db')
-db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
-26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/88_39_46/updated.db')
 #db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
-#25_vac_study_best_fit/s100_sub1_2ox_vac_2mg_vac/84_88_27_26/updated.db')
+#26_vac_study_most_stable/s100_sub1_ox_vac_2mg_vac/88_39_46/updated.db')
+db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
+26_vac_study_most_stable/s100_sub1_2ox_vac_2mg_vac/84_88_16_26/updated.db')
 #db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 #25_vac_study_best_fit/s100_sub1_ox_vac_2mg_vac/88_38_28/updated.db')
 iso_molecule_db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
@@ -31,10 +31,10 @@ iso_molecule_db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 palette = sns.color_palette('muted')
 
 
-configs = np.unique([row.path.split('s100_sub1_ox_vac_2mg_vac/')[-1].split('/')[0]
-           for row in db.select(convergence=True)])
 #configs = np.unique([row.path.split('s100_sub1_ox_vac_2mg_vac/')[-1].split('/')[0]
 #           for row in db.select(convergence=True)])
+configs = np.unique([row.path.split('s100_sub1_2ox_vac_2mg_vac/')[-1].split('/')[0]
+           for row in db.select(convergence=True)])
 species_dict = {}
 bare_dict = {}
 
