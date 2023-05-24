@@ -28,6 +28,7 @@ for row in db.select(convergence=True):
 
     if '02_pt-mgo-ethylene/01_bare/opt_PBE_400_221' in row.path:
         bare_energy = row.energy
+        print(f"bare energy {bare_energy}")
     elif '01_hydrogen' in row.path:
         H2_energy = row.energy
     elif '17_100_PtMgO_H2' in row.path:

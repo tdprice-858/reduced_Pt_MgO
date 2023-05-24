@@ -68,6 +68,7 @@ for row in db.select(convergence=True):
         #print(f"{path} \n {energy}")
     elif '01_hydrogen' in row.path:
         H2_energy = row.energy
+        print(H2_energy)
 
     elif '17_100_PtMgO_H2' in row.path:
         H2_ad.append(row.energy)

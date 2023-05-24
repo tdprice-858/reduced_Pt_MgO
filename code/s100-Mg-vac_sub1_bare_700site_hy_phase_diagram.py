@@ -13,21 +13,8 @@ species = {'H2': StatMech(name='H2', atoms=molecule('H2'),
                    vib_wavenumbers=[4577.98], symmetrynumber=2,
                    #symmetry number comes from the point group
                    **presets['idealgas']),
-        #'O2': StatMech(name='O2', atoms=molecule('O2'),
-         #                  #took this from my calculated O2 molecule
-          #                 potentialenergy=-10.277953,
-           #                vib_wavenumbers=[1603], symmetrynumber=1,
-            #               #symmetry number comes from the point group
-             #              **presets['idealgas']),
                        'bare': StatMech(
-                 name='bare', potentialenergy=-908.69, **presets['electronic']),
-        #'CO': StatMech(name='CO', atoms=molecule('CO'),
-         #                  #took this from my calculated CO molecule
-          #                 potentialenergy=-15.185734,
-           #            #need to confirm that CO symmetrymnumber is 1
-            #               vib_wavenumbers=[2141], symmetrynumber=1,
-             #              #symmetry number comes from the point group
-              #             **presets['idealgas']),
+                 name='bare', potentialenergy=-909.51662, **presets['electronic']),
 
 }
 
@@ -144,7 +131,7 @@ import numpy as np
 from matplotlib import pyplot as plt
 
 T = np.linspace(300, 1000, 200) # K
-fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='kJ/mol')
+fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='eV')
 
 
 # Set colors to lines

@@ -5,7 +5,7 @@ from pmutt.statmech import StatMech, presets
 from ase.build import molecule
 from pprint import pprint
 
-db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/updated.db')
+db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/23_s100-Mg-vac_sub_bare_0/updated.db')
 
 species = {'H2': StatMech(name='H2', atoms=molecule('H2'),
                    #took this from my calculated H2 molecule
@@ -20,7 +20,7 @@ species = {'H2': StatMech(name='H2', atoms=molecule('H2'),
             #               #symmetry number comes from the point group
              #              **presets['idealgas']),
                        'bare': StatMech(
-                 name='bare', potentialenergy=-908.69, **presets['electronic']),
+                 name='bare', potentialenergy=-908.68746, **presets['electronic']),
         #'CO': StatMech(name='CO', atoms=molecule('CO'),
          #                  #took this from my calculated CO molecule
           #                 potentialenergy=-15.185734,
