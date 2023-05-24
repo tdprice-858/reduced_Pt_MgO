@@ -149,7 +149,7 @@ def get_exafs_data(exafs_dict, rootdir):
 
     return exafs_dict
 
-os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/vac_study_best_fit_most_stable/')
+os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/vac_study_best_fit_most_stable')
 root_dir = os.getcwd()
 exafs_dict = {}
 exafs_dict = get_exafs_data(exafs_dict, root_dir)
@@ -157,23 +157,24 @@ exafs_dict = get_exafs_data(exafs_dict, root_dir)
 new_dict = sorted(exafs_dict.items(), key=lambda x: x[1]['red \u03C72'], reverse=False)
 
 #Because new_dict is actually a list, we need to make a new list
-sorted_dict = {}
-for count, item in enumerate(new_dict):
-    sorted_dict[f"{new_dict[count][0]}"] = new_dict[count][1]
+#sorted_dict = {}
+#for count, item in enumerate(new_dict):
+#    sorted_dict[f"{new_dict[count][0]}"] = new_dict[count][1]
 #print(sorted_dict)
-#print(dict(new_dict))
-with open('../../Pt_MgO/table.txt', 'w') as f:
+sorted_dict = dict(new_dict)
+with open('84_46_37-fits.txt', 'w') as f:
     for title, keys in sorted_dict.items():
-        print(title)
-        #print(keys)
-        #if float(sorted_dict[f"{title}"]['sig2_2'][0].split()[0]) > 0.0001 and float(sorted_dict[f"{title}"]['sig2_3'][0].split()[0]) > 0.0001:
-        #if 'H_ad' in title:
-        #print(title.split('/')[-1])
-        #print(tabulate(keys, headers='keys', tablefmt='fancy_grid'))
-        #title = color.BOLD + f"{title.split('/')[-1]}" + color.END + "\n"
-        #print(title)
-        f.write(f"{title.split('/')[-1]} \n")
-        f.write(f"{tabulate(keys, headers='keys', tablefmt='fancy_grid')} \n")
+        if '84_46_37' in title:
+            print(title)
+            #print(keys)
+            #if float(sorted_dict[f"{title}"]['sig2_2'][0].split()[0]) > 0.0001 and float(sorted_dict[f"{title}"]['sig2_3'][0].split()[0]) > 0.0001:
+            #if 'H_ad' in title:
+            #print(title.split('/')[-1])
+            #print(tabulate(keys, headers='keys', tablefmt='fancy_grid'))
+            #title = color.BOLD + f"{title.split('/')[-1]}" + color.END + "\n"
+            #print(title)
+            f.write(f"{title.split('/')[-1]} \n")
+            f.write(f"{tabulate(keys, headers='keys', tablefmt='fancy_grid')} \n")
 
 
 #os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/stable_hydrogen_structures_3_categories/3_cats_fix_params/03_2_ad_hy01_ot_pt_ot_vac/')

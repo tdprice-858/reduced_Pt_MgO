@@ -4,7 +4,8 @@ import matplotlib.pyplot as plt
 from ase.visualize import view
 
 #db = connect('/Users/tdprice/Desktop/pt_mgo_ethylene/pt_mgo.db')
-db = connect('/Users/tdprice/Desktop/pt_mgo_ethylene/vacancy_study/s100_sub1_2ox_vac_2mg_vac/updated.db')
+db = connect('/Users/tdprice/Desktop/pt_mgo_ethylene/vacancy_study/\
+reduced/s100_sub1_2ox_vac_2mg_vac/updated.db')
 
 #Empty list for data
 ad_1H_energy = []
@@ -24,9 +25,9 @@ s100_sub1_2ox_vac_2mg_vac_dict = {}
 s100_sub1_2ox_vac_mg_vac_dict = {}
 
 for row in db.select():
-    if "H_ad" in row.path:
-        print(row.path)
-        continue
+    #if "H_ad" in row.path:
+    #    print(row.path)
+    #    continue
     print(i)
     #if 's100_sub1_ox_vac_2mg_vac_88_16_39' in row.path:
         #view(row.toatoms())
@@ -81,7 +82,7 @@ for row in db.select():
 
 
 sorted_s100_sub1_ox_vac_2mg_vac_dict = sorted(s100_sub1_ox_vac_2mg_vac_dict.items(), key=lambda x: x[1]['red_chi_square'], reverse=False)
-print(sorted_s100_sub1_ox_vac_2mg_vac_dict)
+
 
 sorted_s100_sub1_ox_vac_2mg_vac_dict = sorted(s100_sub1_ox_vac_2mg_vac_dict.items(), key=lambda x: x[1]['energy'], reverse=False)
 sorted_s100_sub1_mg_vac_dict = sorted(s100_sub1_mg_vac.items(), key=lambda x: x[1]['energy'], reverse=False)
@@ -91,7 +92,7 @@ sorted_s100_sub1_2ox_vac_2mg_vac_dict = sorted(s100_sub1_2ox_vac_2mg_vac_dict.it
 sorted_s100_sub1_2ox_vac_mg_vac_dict = sorted(s100_sub1_2ox_vac_mg_vac_dict.items(), key=lambda x: x[1]['energy'], reverse=False)
 
 #print(sorted_s100_sub1_2ox_vac_2mg_vac_dict)
-print(sorted_s100_sub1_ox_vac_2mg_vac_dict)
+print(sorted_s100_sub1_2ox_vac_mg_vac_dict)
 
 s100_sub1_ox_vac_mag_vac_minE = sorted_s100_sub1_ox_vac_mg_vac_dict[0][1]['energy']
 s100_sub1_mg_vac_minE = sorted_s100_sub1_mg_vac_dict[0][1]['energy']
@@ -213,15 +214,7 @@ for data in sorted_s100_sub1_ox_vac_2mg_vac_dict:
     #print(data[0], 'structure')
     #print(data[-1]['energy'])
     #print(data[-1]['red_chi_square'])
-    print(data[0], 'structure')
-    print('energy')
-    print(data[-1]['energy'])
-    print('red chi square')
-    print(data[-1]['red_chi_square'])
-    print('frechet')
-    print(data[-1]['frechet'])
-    print('boltzman')
-    print(boltzmann_factor(np.array(data[-1]['energy']), T))
+
 
 
 for data in sorted_s100_sub1_ox_vac_mg_vac_dict:
@@ -247,10 +240,20 @@ for data in sorted_s100_sub1_2ox_vac_mg_vac_dict:
     s100_sub1_2ox_vac_mg_vac_energy.append(data[-1]['energy'])
 
 for data in sorted_s100_sub1_2ox_vac_2mg_vac_dict:
+    print(data[0], 'structure')
+    print('energy')
+    print(data[-1]['energy'])
+    print('red chi square')
+    print(data[-1]['red_chi_square'])
+    print('frechet')
+    print(data[-1]['frechet'])
+    print('boltzman')
+    print(boltzmann_factor(np.array(data[-1]['energy']), T))
     s100_sub1_2ox_vac_2mg_vac_r_factor.append(data[-1]['r_factor'])
     s100_sub1_2ox_vac_2mg_vac_frechet.append(data[-1]['frechet'])
     s100_sub1_2ox_vac_2mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
     s100_sub1_2ox_vac_2mg_vac_energy.append(data[-1]['energy'])
+
     #print(data[0], 'structure')
     #print(data[-1]['energy'])
     #print(data[0], 'structure')
