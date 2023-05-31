@@ -90,9 +90,9 @@ sorted_s100_sub1_ox_vac_dict = sorted(s100_sub1_ox_vac.items(), key=lambda x: x[
 sorted_s100_sub1_ox_vac_mg_vac_dict = sorted(s100_sub1_ox_vac_mg_vac.items(), key=lambda x: x[1]['energy'], reverse=False)
 sorted_s100_sub1_2ox_vac_2mg_vac_dict = sorted(s100_sub1_2ox_vac_2mg_vac_dict.items(), key=lambda x: x[1]['energy'], reverse=False)
 sorted_s100_sub1_2ox_vac_mg_vac_dict = sorted(s100_sub1_2ox_vac_mg_vac_dict.items(), key=lambda x: x[1]['energy'], reverse=False)
-
+print(sorted_s100_sub1_mg_vac_dict)
 #print(sorted_s100_sub1_2ox_vac_2mg_vac_dict)
-print(sorted_s100_sub1_2ox_vac_mg_vac_dict)
+#print(sorted_s100_sub1_2ox_vac_mg_vac_dict)
 
 s100_sub1_ox_vac_mag_vac_minE = sorted_s100_sub1_ox_vac_mg_vac_dict[0][1]['energy']
 s100_sub1_mg_vac_minE = sorted_s100_sub1_mg_vac_dict[0][1]['energy']
@@ -233,13 +233,6 @@ for data in sorted_s100_sub1_mg_vac_dict:
     s100_sub1_mg_vac_frechet.append(data[-1]['frechet'])
     s100_sub1_mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
     s100_sub1_mg_vac_energy.append(data[-1]['energy'])
-for data in sorted_s100_sub1_2ox_vac_mg_vac_dict:
-    s100_sub1_2ox_vac_mg_vac_r_factor.append(data[-1]['r_factor'])
-    s100_sub1_2ox_vac_mg_vac_frechet.append(data[-1]['frechet'])
-    s100_sub1_2ox_vac_mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
-    s100_sub1_2ox_vac_mg_vac_energy.append(data[-1]['energy'])
-
-for data in sorted_s100_sub1_2ox_vac_2mg_vac_dict:
     print(data[0], 'structure')
     print('energy')
     print(data[-1]['energy'])
@@ -249,6 +242,14 @@ for data in sorted_s100_sub1_2ox_vac_2mg_vac_dict:
     print(data[-1]['frechet'])
     print('boltzman')
     print(boltzmann_factor(np.array(data[-1]['energy']), T))
+for data in sorted_s100_sub1_2ox_vac_mg_vac_dict:
+    s100_sub1_2ox_vac_mg_vac_r_factor.append(data[-1]['r_factor'])
+    s100_sub1_2ox_vac_mg_vac_frechet.append(data[-1]['frechet'])
+    s100_sub1_2ox_vac_mg_vac_red_chi_square.append(data[-1]['red_chi_square'])
+    s100_sub1_2ox_vac_mg_vac_energy.append(data[-1]['energy'])
+
+for data in sorted_s100_sub1_2ox_vac_2mg_vac_dict:
+
     s100_sub1_2ox_vac_2mg_vac_r_factor.append(data[-1]['r_factor'])
     s100_sub1_2ox_vac_2mg_vac_frechet.append(data[-1]['frechet'])
     s100_sub1_2ox_vac_2mg_vac_red_chi_square.append(data[-1]['red_chi_square'])

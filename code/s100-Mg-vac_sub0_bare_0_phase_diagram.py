@@ -7,6 +7,9 @@ from pprint import pprint
 
 db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/23_s100-Mg-vac_sub_bare_0/updated.db')
 
+for row in db.select(convergence=True):
+    print(row.path)
+
 species = {'H2': StatMech(name='H2', atoms=molecule('H2'),
                    #took this from my calculated H2 molecule
                    potentialenergy=-6.5041754,
@@ -39,7 +42,7 @@ h1subad_low_pot_energy = 10000000
 h2subad_low_pot_energy = 10000000
 h2subad_low_pot_energy2 =10000000
 for row in db.select():
-    print(row.path)
+    #print(row.path)
     if '02_all_surf_atoms_constrained' in row.path:
         if row.energy < h1ad_low_pot_energy:
             h1ad_low_pot_energy = row.energy

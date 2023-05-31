@@ -24,9 +24,11 @@ h3ad_low_pot_energy = 10000000
 h4ad_low_pot_energy = 10000000
 h1subad_low_pot_energy = 10000000
 h2subad_low_pot_energy = 10000000
-h2subad_low_pot_energy2 =10000000
+h2subad_low_pot_energy2 = 10000000
 for row in db.select():
-    print(row.path)
+    if '02_pt-mgo-ethylene/01_bare/opt_PBE_400_221' in row.path:
+        print(row.path)
+        print(row.energy)
     if '02_all_surf_atoms_constrained' in row.path:
         if row.energy < h1ad_low_pot_energy:
             h1ad_low_pot_energy = row.energy
@@ -55,7 +57,7 @@ for row in db.select():
         if row.energy < h2subad_low_pot_energy2:
             h2subad_low_pot_energy2 = row.energy
             h2subad_path2 = row.path
-            print(h2subad_path2)
+            #print(h2subad_path2)
 
 
 for row in db.select():
@@ -101,6 +103,7 @@ from pmutt.reaction import Reaction
 
 reactions=[
     Reaction.from_string('bare = bare', species)]
+
 for n in species:
     if 'H2' not in n and 'bare' not in n:
         if n.split('_')[1] == '1hy' or n.split('_')[1] == '1ad':
@@ -191,6 +194,7 @@ cbar2.ax.set_yticklabels(labels)
 print(labels)
 
 fig2.set_dpi(150.)
+fig2.set_size_inches((11,8))
 plt.show()
 
 
