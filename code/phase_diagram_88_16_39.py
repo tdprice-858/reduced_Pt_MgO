@@ -108,12 +108,8 @@ for config in configs:
                         h1ad_surf_low_pot_energy = row.energy
                         species_dict[config]['surf_H_ad'] = row.energy
                 if '2H_ad' in row.path:
-                    print(row.path)
-                    print(row.energy)
-
 
                     if row.energy < h2ad_surf_pot_energy:
-
 
                         h2ad_surf_pot_energy = row.energy
                         species_dict[config]['surf_2H_ad'] = row.energy

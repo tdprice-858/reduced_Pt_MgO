@@ -184,7 +184,7 @@ for config in configs:
                              651.433586, 570.170672, 370.203939],
                 **presets['harmonic'])
             reactions.append(Reaction.from_string(f"bare_{config} \
-                                    + 2 H2 = {item +'_'+ config} + shift_{config}", species))
+                                    + 2 H2 = {item +'_'+ config} + shift_{config}", species)
 
 
 
