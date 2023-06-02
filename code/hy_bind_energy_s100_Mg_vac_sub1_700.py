@@ -127,7 +127,8 @@ plt.bar(x7 , h2_surf_subsurf_binding_energy_per_h, color='r',
 
 plt.xlabel('Configuration', fontweight='bold', fontsize=11)
 plt.ylabel('Binding energy eV', fontweight='bold', fontsize=11)
-plt.title('H* adsorption on 700 Pt/MgO', fontweight='bold', fontsize=12)
+plt.title('H* adsorption on s100-sub1-Mg-vac_sub1 (700 site)',
+          fontweight='bold', fontsize=12)
 plt.legend()
 plt.show()
 
