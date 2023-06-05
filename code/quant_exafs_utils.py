@@ -1,4 +1,6 @@
 import os
+from itertools import islice
+from decimal import Decimal
 
 def get_exafs_data(exafs_dict, rootdir, sig_constraint=0.0001, sort=""):
     """"
@@ -45,6 +47,7 @@ def get_exafs_data(exafs_dict, rootdir, sig_constraint=0.0001, sort=""):
     """
     # Generating file names in a directory tree and filtering out for desired paths
     for subdir, dirs, files in os.walk(rootdir, followlinks=True):
+        #Need to get rid of this 'ind' condition
         if not subdir == rootdir and 'ind' not in subdir:
             if os.path.exists(subdir + '/report.txt'):
                 with open(subdir + '/report.txt', 'r') as file:
