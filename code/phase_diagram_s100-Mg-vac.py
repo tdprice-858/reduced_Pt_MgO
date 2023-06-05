@@ -8,6 +8,7 @@ from pprint import pprint
 import time
 from pmutt.reaction import Reaction
 from pmutt.reaction.phasediagram import PhaseDiagram
+import matplotlib.lines as mlines
 startTime = time.time()
 
 db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/updated.db')
@@ -15,6 +16,8 @@ sub0_Mg_vac_db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 27_s100-Mg-vac_sub1/mg_vac_sub0/updated.db')
 sub1_Mg_vac_sub0_pt_db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
 23_s100-Mg-vac_sub_bare_0/updated.db')
+sub0_Mg_vac_sub0_pt_db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
+28_s100-sub0-Mg-vac_sub0/updated.db')
 palette = sns.color_palette('muted')
 
 
@@ -26,8 +29,8 @@ species = {'H2': StatMech(name='H2', atoms=molecule('H2'),
                    **presets['idealgas'])
 
 }
-configs = np.unique(['s100-sub1-Mg-vac_sub1', 's100-sub0-Mg-vac_sub1',
-                     's100-sub1-Mg-vac_sub0'])
+configs = ['s100-sub1-Mg-vac_sub1', 's100-sub0-Mg-vac_sub1']#,
+                     #'s100-sub1-Mg-vac_sub0','s100-sub0-Mg-vac_sub0']
 print(configs)
 species_dict = {}
 for config in configs:
@@ -89,35 +92,9 @@ for row in sub0_Mg_vac_db.select(convergence=True):
     print(row.path)
     if 'bare' in row.path:
         print('hello')
-        species_dict[configs[0]]['bare'] = row.path
-        bare_dict[configs[0]] = row.energy
-    if '01_1H_ad' in row.path:
-        if row.energy < h1ad_surf_low_pot_energy:
-            h1ad_surf_low_pot_energy = row.energy
-            species_dict[configs[0]]['surf_H_ad'] = row.energy
-    if '2H_ad' in row.path:
-        if row.energy < h2ad_surf_pot_energy:
-            h2ad_surf_pot_energy = row.energy
-            species_dict[configs[0]]['surf_2H_ad'] = row.energy
-    if '3H_ad' in row.path:
-        if row.energy < h3ad_surf_low_pot_energy:
-            h3ad_surf_low_pot_energy = row.energy
-            species_dict[configs[0]]['surf_3H_ad'] = row.energy
-    if '4H_ad' in row.path:
-        if row.energy < h4ad_surf_low_pot_energy:
-            h4ad_surf_low_pot_energy = row.energy
-            species_dict[configs[0]]['surf_4H_ad'] = row.energy
-
-h1ad_surf_low_pot_energy = 10000000
-h2ad_surf_pot_energy = 10000000
-h3ad_surf_low_pot_energy = 10000000
-h4ad_surf_low_pot_energy = 10000000
-
-for row in sub1_Mg_vac_sub0_pt_db.select(convergence=True):
-    if 'bare' in row.path.split('/')[-2]:
         species_dict[configs[1]]['bare'] = row.path
         bare_dict[configs[1]] = row.energy
-    if '1H_ad' in row.path:
+    if '01_1H_ad' in row.path:
         if row.energy < h1ad_surf_low_pot_energy:
             h1ad_surf_low_pot_energy = row.energy
             species_dict[configs[1]]['surf_H_ad'] = row.energy
@@ -125,6 +102,62 @@ for row in sub1_Mg_vac_sub0_pt_db.select(convergence=True):
         if row.energy < h2ad_surf_pot_energy:
             h2ad_surf_pot_energy = row.energy
             species_dict[configs[1]]['surf_2H_ad'] = row.energy
+    if '3H_ad' in row.path:
+        if row.energy < h3ad_surf_low_pot_energy:
+            h3ad_surf_low_pot_energy = row.energy
+            species_dict[configs[1]]['surf_3H_ad'] = row.energy
+    if '4H_ad' in row.path:
+        if row.energy < h4ad_surf_low_pot_energy:
+            h4ad_surf_low_pot_energy = row.energy
+            species_dict[configs[1]]['surf_4H_ad'] = row.energy
+
+'''h1ad_surf_low_pot_energy = 10000000
+h2ad_surf_pot_energy = 10000000
+h3ad_surf_low_pot_energy = 10000000
+h4ad_surf_low_pot_energy = 10000000
+
+for row in sub1_Mg_vac_sub0_pt_db.select(convergence=True):
+    if 's100-sub1-Mg-vac_sub_long' not in row.path:
+        if 'bare' in row.path.split('/')[-2]:
+            species_dict[configs[2]]['bare'] = row.path
+            bare_dict[configs[2]] = row.energy
+        if '1H_ad' in row.path:
+            if row.energy < h1ad_surf_low_pot_energy:
+                h1ad_surf_low_pot_energy = row.energy
+                species_dict[configs[2]]['surf_H_ad'] = row.energy
+        if '2H_ad' in row.path:
+            if row.energy < h2ad_surf_pot_energy:
+                h2ad_surf_pot_energy = row.energy
+                species_dict[configs[2]]['surf_2H_ad'] = row.energy
+
+
+h1ad_surf_low_pot_energy = 10000000
+h2ad_surf_pot_energy = 10000000
+h3ad_surf_low_pot_energy = 10000000
+h4ad_surf_low_pot_energy = 10000000
+
+for row in sub0_Mg_vac_sub0_pt_db.select(convergence=True):
+    if 'bare' in row.path.split('/')[-2]:
+        print('hihihihi')
+        species_dict[configs[-1]]['bare'] = row.path
+        bare_dict[configs[-1]] = row.energy
+    if '1H_ad' in row.path:
+        if row.energy < h1ad_surf_low_pot_energy:
+            h1ad_surf_low_pot_energy = row.energy
+            species_dict[configs[-1]]['surf_H_ad'] = row.energy
+    if '2H_ad' in row.path:
+        if row.energy < h2ad_surf_pot_energy:
+            h2ad_surf_pot_energy = row.energy
+            species_dict[configs[-1]]['surf_2H_ad'] = row.energy
+    if '3H_ad' in row.path:
+        if row.energy < h3ad_surf_low_pot_energy:
+            h3ad_surf_low_pot_energy = row.energy
+            species_dict[configs[-1]]['surf_3H_ad'] = row.energy
+    if '4H_ad' in row.path:
+        if row.energy < h4ad_surf_low_pot_energy:
+            h4ad_surf_low_pot_energy = row.energy
+            species_dict[configs[-1]]['surf_4H_ad'] = row.energy'''
+
 
 bare_min = min(bare_dict.values())
 reactions = []
@@ -202,18 +235,25 @@ colors = ('#000080', '#0029FF', '#00D5FF', '#7AFF7D',
           '#FFE600', '#FF4A00', '#800000')
 # Code from example
 for color, line in zip(colors, ax1.get_lines()):
-    print(line, 'line')
+    #print(line, 'line')
     line.set_color(color)
 
 num_configs = len(configs)
 
 for line in ax1.get_lines():
-    print(line, 'line')
+    #print(line, 'line')
     for count, config in enumerate(configs):
         if config in str(line):
             line.set_color(palette[count])
-            if 'H' in str(line):
+            print(str(line))
+            if '_H' in str(line):
                 line.set_marker('^')
+            elif '2H_ad' in str(line):
+                line.set_marker('*')
+            elif '3H_ad' in str(line):
+                line.set_marker('d')
+            elif '4H_ad' in str(line):
+                line.set_marker('D')
             else:
                 line.set_marker('o')
 
@@ -225,10 +265,24 @@ for key, value in species.items():
 
 handles, _ = ax1.get_legend_handles_labels()
 ax1.get_legend().remove()
+print(handles)
+print(labels)
 ax1.legend(handles, labels, loc=0,
            title='Various configurations', fontsize= 8)
 ax1.set_xlabel('Temperature (K)')
+#fig1.legend(loc=1)
+y = np.linspace(-2.5, 4.5, 15)
+H_ad = mlines.Line2D([], [], color='black', marker='^', linestyle='None',
+                          markersize=6, label='1H_ad')
+H2_ad = mlines.Line2D([], [], color='black', marker='*', linestyle='None',
+                          markersize=6, label='2H_ad')
+H3_ad = mlines.Line2D([], [], color='black', marker='d', linestyle='None',
+                          markersize=6, label='3H_ad')
+H4_ad = mlines.Line2D([], [], color='black', marker='D', linestyle='None',
+                          markersize=6, label='4H_ad')
 
+fig1.legend(handles=[H_ad, H2_ad, H3_ad, H4_ad])
+ax1.set_yticks(y)
 fig1.set_dpi(150.)
 fig1.show()
 
@@ -260,7 +314,7 @@ for key, value in species.items():
     if str(key) != 'H2' and 'shift' not in str(key):
         labels.append(str(key))
 cbar2.ax.set_yticklabels(labels)
-print(labels)
+#print(labels)
 fig2.set_dpi(150.)
 fig2.set_size_inches((14,8))
 plt.show()

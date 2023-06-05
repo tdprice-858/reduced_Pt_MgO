@@ -149,8 +149,7 @@ def get_exafs_data(exafs_dict, rootdir):
 
     return exafs_dict
 
-os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/\
-s100_sub0-Mg-vac_sub1/')
+os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/exafs_fitting_tdp_db_sub0_reduced_data/')
 root_dir = os.getcwd()
 exafs_dict = {}
 exafs_dict = get_exafs_data(exafs_dict, root_dir)
@@ -163,7 +162,7 @@ new_dict = sorted(exafs_dict.items(), key=lambda x: x[1]['red \u03C72'], reverse
 #    sorted_dict[f"{new_dict[count][0]}"] = new_dict[count][1]
 #print(sorted_dict)
 sorted_dict = dict(new_dict)
-with open('s100_sub0-Mg-vac_sub1.txt', 'w') as f:
+with open('s100_sub1-Mg-vac_sub0.txt', 'w') as f:
     for title, keys in sorted_dict.items():
             print(title)
             #print(keys)

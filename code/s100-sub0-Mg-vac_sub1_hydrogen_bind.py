@@ -56,7 +56,7 @@ for row in db.select(convergence=True):
         h_4ad_surf.append(row.energy)
         path = row.path
         energy = row.energy
-        #print(f"{path} \n {energy}")
+        #print(f"{path} \n {energy}")```
 
 h1_binding_energy = np.array(h_1ad_surf)
 h2_binding_energy = np.array(h_2ad_surf)

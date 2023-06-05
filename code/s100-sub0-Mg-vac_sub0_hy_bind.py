@@ -9,7 +9,7 @@ import time
 start_time = time.perf_counter()
 
 db = connect('/Users/tdprice/Desktop/02_pt-mgo-ethylene/\
-23_s100-Mg-vac_sub_bare_0/updated.db')
+28_s100-sub0-Mg-vac_sub0/updated.db')
 
 #Empty list for data
 h_1ad_surf = []
@@ -28,29 +28,30 @@ H2_ad = []
 
 for row in db.select(convergence=True):
 
-    if 'bare' in row.path.split('/')[-2]:
+    if 'bare' in row.path:
         bare_energy = row.energy
         print(bare_energy)
         print(row.path)
-    elif '1H_ad' in row.path:
+    elif '01_1H_ad' in row.path:
         h_1ad_surf.append(row.energy)
         path = row.path
         energy = row.energy
         #print(path)
         #print(row.energy)
         print(f"{path} \n {energy}")
-    elif '2H_ad' in row.path:
+    elif '02_2H_ad' in row.path:
         h_2ad_surf.append(row.energy)
         path = row.path
         energy = row.energy
+
         print(f"{path} \n {energy}")
-    elif '3H_ad' in row.path:
+    elif '03_3H_ad' in row.path:
         h_3ad_surf.append(row.energy)
-    elif '4H_ad' in row.path:
+    elif '04_4H_ad' in row.path:
         h_4ad_surf.append(row.energy)
         path = row.path
         energy = row.energy
-        #print(f"{path} \n {energy}")
+        print(f"{path} \n {energy}")
 
 h1_binding_energy = np.array(h_1ad_surf)
 h2_binding_energy = np.array(h_2ad_surf)
@@ -86,9 +87,9 @@ x4 = np.arange(len(h4_binding_energy_per_h)) + x3[-1] +1
 #x8 = np.arange(len(H2_binding_energy_per_molecule)) + x7[-1] +1
 
 
-plt.bar(x1, h1_binding_energy_per_h, color='r',
+plt.bar(x1,h1_binding_energy_per_h, color='r',
         edgecolor='grey', label='1H* surf')
-plt.bar(x2, h2_binding_energy_per_h, color='b',
+plt.bar(x2,h2_binding_energy_per_h, color='b',
         edgecolor='grey', label='2H* surf')
 plt.bar(x3 , h3_binding_energy_per_h, color='y',
         edgecolor='grey', label='3H* surf')
@@ -105,7 +106,8 @@ plt.bar(x4, h4_binding_energy_per_h, color='c',
 
 plt.xlabel('Configuration', fontweight='bold', fontsize=11)
 plt.ylabel('Binding energy eV', fontweight='bold', fontsize=11)
-plt.title('H* adsorption on sub0-Mg-Vac_sub0', fontweight='bold', fontsize=12)
+plt.title('H* adsorption on s100-sub0-Mg-vac_sub0',
+          fontweight='bold', fontsize=12)
 plt.legend()
 plt.show()
 
