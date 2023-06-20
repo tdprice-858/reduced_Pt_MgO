@@ -11,7 +11,7 @@ from quant_exafs_utils import get_exafs_data
 
 # Where you want to execute code
 #os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/exafs_fitting_jacs_pap_pristine_data')
-os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/exafs_fitting_jacs_pap_reduced_data')
+os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/s100-sub0-Mg-vac_sub0')
 rootdir = os.getcwd()
 
 #Sorting dictionary, and confirming
@@ -49,7 +49,8 @@ for data in new_dict:
     structure = data[0].split('/')[-1]
     dict_data = data[1]
     #print(f"{structure} structure, {dict_data}")
-    if 's310' in data[0].split('/')[-1] and data[-1]['red_chi_square'] < 100:
+    print(data)
+    '''if 's310' in data[0].split('/')[-1] and data[-1]['red_chi_square'] < 100:
         s310_r_factor.append(data[1]['r_factor'])
         s310_frechet.append(data[1]['frechet'])
         s310_red_chi.append(data[1]['red_chi_square'])
@@ -58,8 +59,8 @@ for data in new_dict:
         s100_r_factor.append(data[1]['r_factor'])
         s100_frechet.append(data[1]['frechet'])
         s100_red_chi.append(data[1]['red_chi_square'])
-        print(f"{structure} structure, {dict_data}")
-    elif 's100-Mg-vac' in data[0].split('/')[-1] and data[-1]['red_chi_square'] < 100:
+        print(f"{structure} structure, {dict_data}")'''
+    if 's100-sub0-Mg-vac_sub0' in data[0] and data[-1]['red_chi_square'] < 100:
         s100_mg_vac_r_factor.append(data[1]['r_factor'])
         s100_mg_vac_frechet.append(data[1]['frechet'])
         s100_mg_vac_red_chi.append(data[1]['red_chi_square'])
@@ -68,9 +69,9 @@ for data in new_dict:
         continue
 
 
-x_s100 = np.arange(len(s100_frechet))
-x_s100_Mg_vac = np.arange(len(s100_mg_vac_frechet)) + x_s100[-1] + 1
-x_s310 = np.arange(len(s310_frechet)) + x_s100_Mg_vac[-1] + 1
+x_s100 = np.arange(len(s100_mg_vac_frechet))
+#x_s100_Mg_vac = np.arange(len(s100_mg_vac_frechet)) + x_s100[-1] + 1
+#x_s310 = np.arange(len(s310_frechet)) + x_s100_Mg_vac[-1] + 1
 
 # Create Plot
 
@@ -79,9 +80,9 @@ fig, ax1 = plt.subplots()
 
 ax1.set_xlabel('Configuration',fontweight='bold', fontsize=11)
 ax1.set_ylabel('red_chi_square', color='black')
-ax1.bar(x_s100, s100_red_chi, color='red', label='[100]')
-ax1.bar(x_s100_Mg_vac, s100_mg_vac_red_chi, color ='purple', label ='[100]-Mg-vac')
-ax1.bar(x_s310, s310_red_chi, color ='orange', label ='[310]')
+ax1.bar(x_s100, s100_mg_vac_red_chi, color='red', label='[100]')
+#ax1.bar(x_s100_Mg_vac, s100_mg_vac_red_chi, color ='purple', label ='[100]-Mg-vac')
+#ax1.bar(x_s310, s310_red_chi, color ='orange', label ='[310]')
 
 ax1.tick_params(axis='y')
 plt.legend(fontsize= 6)
@@ -90,9 +91,9 @@ plt.legend(fontsize= 6)
 
 ax2 = ax1.twinx()
 ax2.set_ylabel('frechet', color='blue')
-ax2.plot(x_s100, s100_frechet, color='blue')
-ax2.plot(x_s100_Mg_vac, s100_mg_vac_frechet, color ='blue')
-ax2.plot(x_s310, s310_frechet, color ='blue')
+ax2.plot(x_s100, s100_mg_vac_frechet, color='blue')
+#ax2.plot(x_s100_Mg_vac, s100_mg_vac_frechet, color ='blue')
+#ax2.plot(x_s310, s310_frechet, color ='blue')
 ax2.tick_params(axis='y')
 
 plt.title('QuantEXAFS Fits s100-Mg-vac structures',
