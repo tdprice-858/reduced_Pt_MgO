@@ -204,6 +204,12 @@ print(sig2_1)
 # plot
 fig, ax = plt.subplots()
 
+# Optimized Pt-O distance without hydrogen
+Pt_O_opt_dist =2.041
+# Optimized Pt-O distance with 2 hydrogen (OH group) most stable structure
+Pt_O_H_opt_dist = 2.965
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
 ax.scatter(o_dist, sig2_1, label='sig2_1 (Pt-'r'$\delta$ O)')
 ax.scatter(o_dist, sig2_2, label='sig2_2 (Pt-O)')
 ax.scatter(o_dist, sig2_3, label='sig2_3 (Pt-Mg)')
@@ -218,21 +224,34 @@ plt.show()
 
 
 fig, ax = plt.subplots()
-
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
 ax.scatter(o_dist, r_factor)
 ax.set_title('r_factor vs. O_dist')
 plt.xlabel('O_dist (Angstrom)')
 plt.ylabel('r_factor')
-
+plt.legend()
 
 plt.show()
 
 fig, ax = plt.subplots()
-
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
 ax.scatter(o_dist, red_chi)
 ax.set_title('red \u03C72 vs. O_dist')
 plt.xlabel('O_dist (Angstrom)')
 plt.ylabel('red \u03C72')
+plt.legend()
 
+plt.show()
+
+fig, ax = plt.subplots()
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
+ax.scatter(o_dist, frechet)
+ax.set_title('Frechet vs. O_dist')
+plt.xlabel('O_dist (Angstrom)')
+plt.ylabel('frechet')
+plt.legend()
 
 plt.show()

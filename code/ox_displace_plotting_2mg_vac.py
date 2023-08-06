@@ -22,9 +22,9 @@ def get_exafs_data(exafs_dict, rootdir):
                 with open(subdir + '/report.txt', 'r') as file:
                     del_r3 = [line for line in file if 'del_r3' in line]
                     del_r3 = del_r3[0].split()[2]
-                #with open(subdir + '/report.txt', 'r') as file:
-                    #sig2_1 = [line.split()[2] for line in file if 'sig2_1    ' in line]
-                    #sig2_1 = sig2_1[0]
+                with open(subdir + '/report.txt', 'r') as file:
+                    sig2_1 = [line.split()[2] for line in file if 'sig2_1    ' in line]
+                    sig2_1 = sig2_1[0]
                     #if float(sig2_2) < 0.001:
                     #    continue
                 with open(subdir + '/report.txt', 'r') as file:
@@ -56,10 +56,8 @@ def get_exafs_data(exafs_dict, rootdir):
                     r_opt = [float(line.split()[2]) for line in file if 'r     ' in line and ':=' in line]
                 with open(subdir + '/report.txt', 'r') as file:
                     r_eff = [float(line.split()[-1]) for line in file if 'reff   ' in line]
-                    print(r_eff)
                 with open(subdir + '/report.txt', 'r') as file:
                     degeneracy = [float(line.split()[-1]) for line in file if 'degen' in line]
-                    print(degeneracy)
                 overall_tag_list = []
                 nlegs_list = []
                 with open(subdir + '/paths.dat', 'r') as g:
@@ -103,7 +101,6 @@ def get_exafs_data(exafs_dict, rootdir):
                             num_sig5_paths += 1*deg
                         if "'sig2_6'" in line:
                             num_sig6_paths += 1*deg
-                print(overall_tag_list)
                 for count, value in enumerate(r_eff):
                     # Change value < 3.2 if looking at Jacs paper
                     if value < 3.2 and nlegs_list[count]==2:
@@ -111,7 +108,6 @@ def get_exafs_data(exafs_dict, rootdir):
                         r = r_opt[count]
                         alpha_1.append(r / re)
                         num_1_paths += 1*degeneracy[count]
-                        print('degeneracy',degeneracy[count])
                     elif value > 3.2 and value < 4.0:
                         re = value
                         r = r_opt[count]
@@ -142,28 +138,29 @@ def get_exafs_data(exafs_dict, rootdir):
                 exafs_dict[str(subdir)]['red \u03C72'] = [round(red[0], 2)]
                 exafs_dict[str(subdir)]['frechet'] = [round(fre[0], 2)]
                 exafs_dict[str(subdir)]['del_e0'] = [round(float(del_e0), 2)]
-                exafs_dict[str(subdir)]['avg\nalpha_1'] = [f"{round(avg_alpha_1, 2)}\n{num_1_paths} paths"]
-                exafs_dict[str(subdir)]['avg\nalpha_2'] = [f"{round(avg_alpha_2, 2)}\n{num_2_paths} paths"]
-                exafs_dict[str(subdir)]['avg\nalpha_3'] = [f"{round(avg_alpha_3, 2)}\n{num_3_paths} paths"]
+                exafs_dict[str(subdir)]['avg\nalpha_1'] = [round(avg_alpha_1, 2)]
+                exafs_dict[str(subdir)]['avg\nalpha_2'] = [round(avg_alpha_2, 2)]
+                exafs_dict[str(subdir)]['avg\nalpha_3'] = [round(avg_alpha_3, 2)]
                 #exafs_dict[str(subdir)]['del_r1'] = [del_r1]
                 #exafs_dict[str(subdir)]['del_r2'] = [del_r2]
                 #exafs_dict[str(subdir)]['del_r3'] = [del_r3]
-                #exafs_dict[str(subdir)]['sig2_1'] = [f"{'%.2E' % Decimal(float((sig2_1)))}\n{num_sig1_paths} paths"]
-                exafs_dict[str(subdir)]['sig2_2'] = [f"{'%.2E' % Decimal(float((sig2_2)))}\n{num_sig2_paths} paths"]
-                exafs_dict[str(subdir)]['sig2_3'] = [f"{'%.2E' % Decimal(float((sig2_3)))}\n{num_sig3_paths} paths"]
-                exafs_dict[str(subdir)]['sig2_4'] = [f"{'%.2E' % Decimal(float((sig2_4)))}\n{num_sig4_paths} paths"]
-                exafs_dict[str(subdir)]['sig2_5'] = [f"{'%.2E' % Decimal(float((sig2_5)))}\n{num_sig5_paths} paths"]
-                exafs_dict[str(subdir)]['sig2_6'] = [f"{'%.2E' % Decimal(float((sig2_6)))}\n{num_sig6_paths} paths"]
+                exafs_dict[str(subdir)]['sig2_1'] = [float((sig2_1))]
+                exafs_dict[str(subdir)]['sig2_2'] = [float((sig2_2))]
+                exafs_dict[str(subdir)]['sig2_3'] = [float((sig2_3))]
+                exafs_dict[str(subdir)]['sig2_4'] = [float((sig2_4))]
+                exafs_dict[str(subdir)]['sig2_5'] = [float((sig2_5))]
+                exafs_dict[str(subdir)]['sig2_6'] = [float((sig2_6))]
 #############%%%% add variable
 
     return exafs_dict
 
-os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/exafs_fitting_jacs_pap_reduced_data/constrained_params')
+os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/\
+oxygen_distance_study/finer_dist_inc')
 root_dir = os.getcwd()
 exafs_dict = {}
 exafs_dict = get_exafs_data(exafs_dict, root_dir)
 
-new_dict = sorted(exafs_dict.items(), key=lambda x: x[1]['red \u03C72'], reverse=False)
+new_dict = sorted(exafs_dict.items(), key=lambda x: x[0], reverse=False)
 
 #Because new_dict is actually a list, we need to make a new list
 #sorted_dict = {}
@@ -171,19 +168,96 @@ new_dict = sorted(exafs_dict.items(), key=lambda x: x[1]['red \u03C72'], reverse
 #    sorted_dict[f"{new_dict[count][0]}"] = new_dict[count][1]
 #print(sorted_dict)
 sorted_dict = dict(new_dict)
-with open('jacs_paper_reduced_fits.txt', 'w') as f:
-    for title, keys in sorted_dict.items():
-            print(title)
-            #print(keys)
-            #if float(sorted_dict[f"{title}"]['sig2_2'][0].split()[0]) > 0.0001 and float(sorted_dict[f"{title}"]['sig2_3'][0].split()[0]) > 0.0001:
-            #if 'H_ad' in title:
-            #print(title.split('/')[-1])
-            #print(tabulate(keys, headers='keys', tablefmt='fancy_grid'))
-            #title = color.BOLD + f"{title.split('/')[-1]}" + color.END + "\n"
-            #print(title)
-            f.write(f"{title.split('/')[-1]} \n")
-            f.write(f"{tabulate(keys, headers='keys', tablefmt='fancy_grid')} \n")
+#print(sorted_dict)
+o_dist = [round(float(path[0].split('/')[-1].split('_')[-1]),2) for path
+    in sorted_dict.items()]
+r_factor = [path[1]['r_factor'] for path
+    in sorted_dict.items()]
+red_chi = [path[1]['red \u03C72'] for path
+    in sorted_dict.items()]
+frechet = [path[1]['frechet'] for path
+    in sorted_dict.items()]
+alpha_1 = [path[1]['avg\nalpha_1'] for path
+    in sorted_dict.items()]
+alpha_2 = [path[1]['avg\nalpha_2'] for path
+    in sorted_dict.items()]
+alpha_3 = [path[1]['avg\nalpha_3'] for path
+    in sorted_dict.items()]
+sig2_1 = [path[1]['sig2_1'] for path
+    in sorted_dict.items()]
+sig2_2 = [path[1]['sig2_2'] for path
+    in sorted_dict.items()]
+sig2_3 = [path[1]['sig2_3'] for path
+    in sorted_dict.items()]
+sig2_4 = [path[1]['sig2_4'] for path
+    in sorted_dict.items()]
+sig2_5 = [path[1]['sig2_5'] for path
+    in sorted_dict.items()]
+sig2_6 = [path[1]['sig2_6'] for path
+    in sorted_dict.items()]
+
+import matplotlib.pyplot as plt
+import numpy as np
 
 
-#os.chdir('/Users/tdprice/Desktop/pt_mgo_ethylene/stable_hydrogen_structures_3_categories/3_cats_fix_params/03_2_ad_hy01_ot_pt_ot_vac/')
-#paths = read_paths()'''
+print(sig2_1)
+
+# plot
+
+# Optimized Pt-O distance without hydrogen
+Pt_O_opt_dist =2.041
+# Optimized Pt-O distance with 2 hydrogen (OH group) most stable structure
+Pt_O_H_opt_dist = 2.965
+
+fig, ax = plt.subplots()
+
+ax.scatter(o_dist, sig2_1, label='sig2_1 (Pt-'r'$\delta$ O)')
+ax.scatter(o_dist, sig2_2, label='sig2_2 (Pt-O)')
+ax.scatter(o_dist, sig2_3, label='sig2_3 (Pt-Mg)')
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
+ax.set_title('2mg_vac: sig2_* vs. O_dist')
+plt.xlabel('O_dist (Angstrom)')
+plt.ylabel('sig2_1')
+plt.legend()
+
+
+plt.show()
+
+
+
+fig, ax = plt.subplots()
+
+ax.scatter(o_dist, r_factor)
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
+ax.set_title('r_factor vs. O_dist')
+plt.xlabel('O_dist (Angstrom)')
+plt.ylabel('r_factor')
+plt.legend()
+
+plt.show()
+
+fig, ax = plt.subplots()
+
+ax.scatter(o_dist, red_chi)
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
+ax.set_title('red \u03C72 vs. O_dist')
+plt.xlabel('O_dist (Angstrom)')
+plt.ylabel('red \u03C72')
+plt.legend()
+
+plt.show()
+
+fig, ax = plt.subplots()
+
+ax.scatter(o_dist, frechet)
+ax.axvline(x=Pt_O_opt_dist, label= 'Opt. Pt-O Dist.', color='r' )
+ax.axvline(x=Pt_O_H_opt_dist, label= 'Opt. Pt-O-H Dist.', color='c')
+ax.set_title('Frechet vs. O_dist')
+plt.xlabel('O_dist (Angstrom)')
+plt.ylabel('frechet')
+plt.legend()
+
+plt.show()

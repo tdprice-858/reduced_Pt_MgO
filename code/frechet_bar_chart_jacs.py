@@ -77,25 +77,25 @@ x_s310 = np.arange(len(s310_frechet)) + x_s100_Mg_vac[-1] + 1
 fig, ax1 = plt.subplots()
 #fig , ax1, ax2= plt.figure(figsize = (10, 5))
 
-ax1.set_xlabel('Configuration',fontweight='bold', fontsize=11)
-ax1.set_ylabel('red_chi_square', color='black')
+ax1.set_xlabel('Configuration',fontweight='bold', fontsize=14)
+ax1.set_ylabel('Reduced \u03C7 $^{2}$', color='black', fontsize=14)
 ax1.bar(x_s100, s100_red_chi, color='red', label='[100]')
 ax1.bar(x_s100_Mg_vac, s100_mg_vac_red_chi, color ='purple', label ='[100]-Mg-vac')
 ax1.bar(x_s310, s310_red_chi, color ='orange', label ='[310]')
 
 ax1.tick_params(axis='y')
-plt.legend(fontsize= 6)
+plt.legend(fontsize= 12)
 
 # Adding Twin Axes
 
 ax2 = ax1.twinx()
-ax2.set_ylabel('frechet', color='blue')
+ax2.set_ylabel('\u03B4 $_{F}$', color='blue', fontsize=14)
 ax2.plot(x_s100, s100_frechet, color='blue')
 ax2.plot(x_s100_Mg_vac, s100_mg_vac_frechet, color ='blue')
 ax2.plot(x_s310, s310_frechet, color ='blue')
 ax2.tick_params(axis='y')
 
-plt.title('exafs_fitting_jacs_reduced_data', fontweight='bold', fontsize=12)
+plt.title('QuantEXAFS fits of JACs Database', fontweight='bold', fontsize=16)
 
 # Show plot
 

@@ -1,4 +1,5 @@
 from ase.db import connect
+from ase.visualize import view
 import numpy as np
 import matplotlib.pyplot as plt
 from pmutt.statmech import StatMech, presets
@@ -29,8 +30,8 @@ species = {'H2': StatMech(name='H2', atoms=molecule('H2'),
                    **presets['idealgas'])
 
 }
-configs = ['s100-sub1-Mg-vac_sub1', 's100-sub0-Mg-vac_sub1']#,
-                     #'s100-sub1-Mg-vac_sub0','s100-sub0-Mg-vac_sub0']
+configs = ['s100-sub1-Mg-vac_sub1', 's100-sub0-Mg-vac_sub1',
+                     's100-sub1-Mg-vac_sub0','s100-sub0-Mg-vac_sub0']
 print(configs)
 species_dict = {}
 for config in configs:
@@ -45,10 +46,11 @@ h4ad_low_pot_energy = 10000000
 #h2subad_low_pot_energy2 = 10000000
 for row in db.select():
     if '02_pt-mgo-ethylene/01_bare/opt_PBE_400_221' in row.path:
-        print(row.path)
-        print(row.energy)
+        #print(row.path)
+        #print(row.energy)
         species_dict['s100-sub1-Mg-vac_sub1']['bare'] = row.path
         bare_dict['s100-sub1-Mg-vac_sub1'] = row.energy
+        #view(row.toatoms())
     if '02_all_surf_atoms_constrained' in row.path:
         if row.energy < h1ad_low_pot_energy:
             h1ad_low_pot_energy = row.energy
@@ -89,16 +91,25 @@ h4ad_surf_low_pot_energy = 10000000
 
 for row in sub0_Mg_vac_db.select(convergence=True):
     #print('hello')
-    print(row.path)
+    #print(row.path)
+
     if 'bare' in row.path:
-        print('hello')
+        #print('hello')
         species_dict[configs[1]]['bare'] = row.path
         bare_dict[configs[1]] = row.energy
+
+
+        #view(row.toatoms())
     if '01_1H_ad' in row.path:
         if row.energy < h1ad_surf_low_pot_energy:
             h1ad_surf_low_pot_energy = row.energy
             species_dict[configs[1]]['surf_H_ad'] = row.energy
     if '2H_ad' in row.path:
+        print(configs[1])
+        print(row.path)
+        print(row.energy)
+        if 'A2_C2' in row.path or 'C2_B3' in row.path or 'B1_C2' in row.path:
+            view(row.toatoms())
         if row.energy < h2ad_surf_pot_energy:
             h2ad_surf_pot_energy = row.energy
             species_dict[configs[1]]['surf_2H_ad'] = row.energy
@@ -111,12 +122,12 @@ for row in sub0_Mg_vac_db.select(convergence=True):
             h4ad_surf_low_pot_energy = row.energy
             species_dict[configs[1]]['surf_4H_ad'] = row.energy
 
-'''h1ad_surf_low_pot_energy = 10000000
+h1ad_surf_low_pot_energy = 10000000
 h2ad_surf_pot_energy = 10000000
 h3ad_surf_low_pot_energy = 10000000
 h4ad_surf_low_pot_energy = 10000000
 
-for row in sub1_Mg_vac_sub0_pt_db.select(convergence=True):
+'''for row in sub1_Mg_vac_sub0_pt_db.select(convergence=True):
     if 's100-sub1-Mg-vac_sub_long' not in row.path:
         if 'bare' in row.path.split('/')[-2]:
             species_dict[configs[2]]['bare'] = row.path
@@ -138,7 +149,7 @@ h4ad_surf_low_pot_energy = 10000000
 
 for row in sub0_Mg_vac_sub0_pt_db.select(convergence=True):
     if 'bare' in row.path.split('/')[-2]:
-        print('hihihihi')
+        #print('hihihihi')
         species_dict[configs[-1]]['bare'] = row.path
         bare_dict[configs[-1]] = row.energy
     if '1H_ad' in row.path:
@@ -220,13 +231,13 @@ for config in configs:
 
 print(reactions)
 #print(species_dict)
-#print(bare_dict)
+#print(bare_dict)`
 
 phase_diagram = PhaseDiagram(reactions=reactions)
 
 
 
-T = np.linspace(300, 1000, 10) # K
+T = np.linspace(300, 700, 10) # K
 fig1, ax1 = phase_diagram.plot_1D(x_name='T', x_values=T, P=1, G_units='eV')
 
 
@@ -284,6 +295,7 @@ H4_ad = mlines.Line2D([], [], color='black', marker='D', linestyle='None',
 fig1.legend(handles=[H_ad, H2_ad, H3_ad, H4_ad])
 ax1.set_yticks(y)
 fig1.set_dpi(150.)
+fig1.set_size_inches((6,6))
 fig1.show()
 
 
@@ -316,7 +328,7 @@ for key, value in species.items():
 cbar2.ax.set_yticklabels(labels)
 #print(labels)
 fig2.set_dpi(150.)
-fig2.set_size_inches((14,8))
+fig2.set_size_inches((16,8))
 plt.show()
 
 
